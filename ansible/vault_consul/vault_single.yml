@@ -1,0 +1,52 @@
+---
+- hosts: vault
+  gather_facts: false
+  become: true
+
+  vars:
+    vault_version: 1.5.0
+    consul_version: 1.8.0
+    vault_user: cloud_user
+    vault_address: http://127.0.0.1:8200
+
+  tasks:
+    - name: "Update Repository"
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: "Install Unzip Package"
+      apt:
+        name: unzip
+        state: latest
+
+## Vault Dev Instance Setup
+
+    - name: "Download Vault Binary"
+      get_url:
+         url: https://releases.hashicorp.com/vault/{{vault_version}}/vault_{{vault_version}}_linux_amd64.zip
+         dest: /tmp/vault_{{vault_version}}_linux_amd64.zip
+         owner: "{{ vault_user }}"
+         group: "{{ vault_user }}"
+         mode: 0755
+      register: vault_download
+
+    - name: "Vault Binary Un archive"
+      unarchive:
+         src: "{{ vault_download.dest }}"
+         dest: /usr/local/bin
+         copy: no
+         owner: "{{ vault_user }}"
+         group: "{{ vault_user }}"
+         mode: 0755
+
+    - name: "Set Vault Binary Capabilities"
+      capabilities:
+         path: /usr/local/bin/vault
+         capability: cap_ipc_lock+ep
+         state: present
+
+    - name: "Export Vault Address"
+      shell: "echo $VAULT_ADDR"
+      environment:
+        MY_ENV_VARIABLE: "{{ vault_address }}"
