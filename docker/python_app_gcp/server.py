@@ -7,10 +7,10 @@ class Mainhandler(tornado.web.RequestHandler):
       self.write("Hello World \n")
       print(self.request)
 
-     def make_app():
-       return tornado.web.Application([
-         (r"/",Mainhandler),
-       ])
+    def make_app():
+      return tornado.web.Application([
+        (r"/",Mainhandler),
+      ])
 
 if __name__=="__main__":
   app = make_app()
