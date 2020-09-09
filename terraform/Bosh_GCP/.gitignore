@@ -1,4 +1,4 @@
-.terraform
-credentials.json
-terraform.tfstate
-terraform.tfstate.backup
+Bosh_GCP/.terraform
+Bosh_GCP/credentials.json
+Bosh_GCP/terraform.tfstate
+Bosh_GCP/terraform.tfstate.backup
