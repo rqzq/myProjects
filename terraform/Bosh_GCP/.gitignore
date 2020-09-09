@@ -1,3 +1,4 @@
 .terraform
-playground-s-11-7ae0a952-cdcd6183a42e.json
+credentials.json
 terraform.tfstate
+terraform.tfstate.backup
