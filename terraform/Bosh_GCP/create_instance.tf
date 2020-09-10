@@ -1,11 +1,11 @@
-resource "google_compute_instance" "default" {
-  name         = "virtual-machine-from-terraform"
-  machine_type = "f1-micro"
-  zone         = "us-central1-a"
+resource "google_compute_instance" "boshVMS" {
+  name         = "bosh-vm"
+  machine_type = var.machineType
+  zone         = var.zone
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = var.image
     }
   }
 
@@ -17,13 +17,13 @@ resource "google_compute_instance" "default" {
     }
   }
 
-    metadata_startup_script = "sudo apt-get update && sudo apt-get install apache2 -y && echo '<!doctype html><html><body><h1>Avenue Code is the leading software consulting agency focused on delivering end-to-end development solutions for digital transformation across every vertical. We pride ourselves on our technical acumen, our collaborative problem-solving ability, and the warm professionalism of our teams.!</h1></body></html>' | sudo tee /var/www/html/index.html"
+    metadata_startup_script = "sudo apt-get update && sudo apt-get install python3-pip -y && sudo pip3 install ansible"
 
     // Apply the firewall rule to allow external IPs to access this instance
-    tags = ["http-server"]
+    tags = ["bosh-infra"]
 }
 
-resource "google_compute_firewall" "http-server" {
+resource "google_compute_firewall" "bosh" {
   name    = "allow-all-traffic"
   network = "default"
 
@@ -34,9 +34,9 @@ resource "google_compute_firewall" "http-server" {
 
   // Allow traffic from everywhere to instances with an http-server tag
   source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["http-server"]
+  target_tags   = ["bosh"]
 }
 
 output "ip" {
-  value = google_compute_instance.default.network_interface[0].access_config[0].nat_ip
+  value = google_compute_instance.boshVMS.network_interface[0].access_config[0].nat_ip
 }
