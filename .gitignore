@@ -1,1 +1,3 @@
 .vscode
+terraform/.idea
+terraform/Bosh_GCP/.terraform
