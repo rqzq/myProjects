@@ -7,10 +7,24 @@ import Welcome from "./components/Welcome";
 function App() {
   return (
     <div className="App">
-    <Greet name="Payel"/>
-    <Greet name="Shinjaann" />
-    <Greet name="Random"/>
-    <Welcome />
+      <Greet name="Payel" surname="Samanta">
+        <p>
+          This is my Wife Name
+        </p>
+      </Greet>
+      <Greet name="Shinjaann" surname="Samanta">
+        <button>
+          Kiss Me
+        </button>
+      </Greet>
+    <Greet name="Random" surname="Tandem"/>
+    <Welcome name="Random" surname="Tandem" />
+    <Welcome name="Random" surname="Tandom" >
+      <button>
+        Hit Me
+      </button>
+    </Welcome>
+    <Welcome name="Random" surname="Tandum" />
     </div>
   );
 }
