@@ -8,9 +8,9 @@ class Counter extends Component{
         }
     }
     changeState(){
-        this.setState({
-            count: this.state.count + 1
-        },() =>console.log(this.state))
+        this.setState((prevState) => ({
+            count: prevState.count + 1
+        }),() =>console.log(this.state.count))
     }
     render(){
         return (
