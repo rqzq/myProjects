@@ -1,8 +1,9 @@
 import React from "react";
 
-const Greet =({name, surname}) => {
+const Greet =props => {
     // To Unpack Variables instead of using Props should be declared within {}
 
+    const {name, surname} = props
     return (
         <div>
             <h1>
