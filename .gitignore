@@ -3,3 +3,6 @@ terraform/.idea
 terraform/Bosh_GCP/.terraform
 .idea
 react-projects\.idea
+terraform/Bosh_GCP/credentials.json
+terraform/Bosh_GCP/terraform.tfstate.backup
+terraform/Bosh_GCP/terraform.tfstate
