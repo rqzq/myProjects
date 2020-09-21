@@ -1,0 +1,55 @@
+---
+- hosts: localhost
+  become: true
+  gather_facts: no
+  become_user: root
+
+  vars:
+    bosh_client_url: https://github.com/cloudfoundry/bosh-cli/releases/download/v6.4.0/bosh-cli-6.4.0-linux-amd64
+
+  tasks:
+    - name: "Install Pre-Requisities Softwares for Bosh"
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      loop:
+        - build-essential
+        - zlibc
+        - zlib1g-dev
+        - ruby
+        - ruby-dev
+        - openssl
+        - libxslt-dev
+        - libxml2-dev
+        - libssl-dev
+        - libreadline6
+        - libreadline6-dev
+        - libyaml-dev
+        - libsqlite3-dev
+        - sqlite3
+
+    - name: "Install Bosh Client"
+      get_url:
+        url: "{{bosh_client_url}}"
+        dest: /tmp/
+
+    - name: "Rename the bosh client"
+      command: mv /tmp/bosh-cli-6.4.0-linux-amd64 /usr/local/bin/bosh
+
+    - name: "Change permission for Bosh Client"
+      file:
+        path: "/usr/local/bin/bosh"
+        mode: '0777'
+
+    - name: "Create Bosh Directory Structure"
+      file:
+        path: ~/bosh-1
+        state: directory
+        mode: '0755'
+
+    - name: "Git Clone Repository"
+      git:
+        repo: https://github.com/cloudfoundry/bosh-deployment
+        dest: ~/bosh-1
+        clone: yes
