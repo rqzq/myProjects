@@ -1,5 +1,9 @@
+resource "random_id" "instance_id" {
+  byte_length = 8
+}
+
 resource "google_compute_instance" "boshVMS" {
-  name         = "bosh-vm"
+  name         = "bosh-vm-${random_id.instance_id.hex}"
   machine_type = var.machineType
   zone         = var.zone
 
@@ -17,10 +21,10 @@ resource "google_compute_instance" "boshVMS" {
     }
   }
 
-    metadata_startup_script = "sudo apt-get update && sudo apt-get install python3-pip -y && sudo pip3 install ansible"
+  metadata_startup_script = "sudo apt-get update && sudo apt-get install python3-pip -y && sudo pip3 install ansible"
 
-    // Apply the firewall rule to allow external IPs to access this instance
-    tags = ["bosh-infra"]
+  // Apply the firewall rule to allow external IPs to access this instance
+  tags = ["bosh-infra"]
 }
 
 resource "google_compute_firewall" "bosh" {
@@ -39,4 +43,11 @@ resource "google_compute_firewall" "bosh" {
 
 output "ip" {
   value = google_compute_instance.boshVMS.network_interface[0].access_config[0].nat_ip
+}
+
+resource "google_compute_address" "static" {
+  name = "bosh-director"
+}
+output "bosh-director-ip" {
+  value = google_compute_address.static.address
 }
