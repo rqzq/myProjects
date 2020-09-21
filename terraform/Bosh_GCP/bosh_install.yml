@@ -75,3 +75,17 @@
             -v tags=[internal] \
             -v network=default \
             -v subnetwork=default
+
+    - name: "Configure Local Aliases"
+      shell: "bosh alias-env bosh-1 -e {{ internal_ip }} --ca-cert <(bosh int ./creds.yml --path /director_ssl/ca)"
+
+    - name: "Set Export Values for Bosh"
+      shell: |
+        export BOSH_CLIENT=admin
+        export BOSH_CLIENT_SECRET=`bosh int ./creds.yml --path /admin_password`
+        alias bosh='bosh -e bosh-1'
+        bosh -v
+        bosh env
+
+    - name: "Upload Stemcells"
+      shell: "bosh upload-stemcell --sha1 287bc96421d10e2112cf769a57822f8a7860176f   https://bosh.io/d/stemcells/bosh-google-kvm-ubuntu-xenial-go_agent?v=621.84"
