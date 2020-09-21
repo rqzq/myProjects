@@ -6,6 +6,7 @@
 
   vars:
     bosh_client_url: https://github.com/cloudfoundry/bosh-cli/releases/download/v6.4.0/bosh-cli-6.4.0-linux-amd64
+    project_id: playground-s-11-ea27fc2f
 
   tasks:
     - name: "Install Pre-Requisities Softwares for Bosh"
@@ -53,3 +54,20 @@
         repo: https://github.com/cloudfoundry/bosh-deployment
         dest: ~/bosh-1
         clone: yes
+
+    - name: "Bosh Create Environment"
+      shell: |
+      bosh create-env bosh.yml \
+          --state=state.json \
+          --vars-store=creds.yml \
+          -o bosh-deployment/gcp/cpi.yml \
+          -v director_name=bosh-gcp \
+          -v internal_cidr=10.128.0.0/24 \
+          -v internal_gw=10.128.0.1 \
+          -v internal_ip=10.128.0.3 \
+          --var-file gcp_credentials_json=/root/bosh-1/creds.json \
+          -v project_id={{ project_id }} \
+          -v zone=us-central1-a \
+          -v tags=[internal] \
+          -v network=default \
+          -v subnetwork=default
