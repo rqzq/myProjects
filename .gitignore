@@ -1,6 +1,7 @@
 .vscode
 terraform/.idea
 terraform/Bosh_GCP/.terraform
+terraform/Infra_Create_AWS/.terraform
 .idea
 react-projects\.idea
 terraform/Bosh_GCP/credentials.json
