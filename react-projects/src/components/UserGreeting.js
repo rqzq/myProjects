@@ -4,19 +4,16 @@ class UserGreeting extends Component{
     constructor() {
         super();
         this.state ={
-            isLoggedin: true
+            isLoggedin: false
         }
     }
     render() {
-        if (this.state.isLoggedin){
-            return (
-                <div> Welcome Bishwajit</div>
-            )
-        }else {
-            return (
-                <div> Welcome Guest !</div>
-            )
+        return this.state.isLoggedin ? (
+            <div> Welcome BS</div>
+        ) :(
+            <div> Welcome Guest</div>
+        )
         }
     }
-}
+
 export default UserGreeting
