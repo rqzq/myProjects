@@ -4,15 +4,11 @@ class UserGreeting extends Component{
     constructor() {
         super();
         this.state ={
-            isLoggedin: false
+            isLoggedin: true
         }
     }
     render() {
-        return this.state.isLoggedin ? (
-            <div> Welcome BS</div>
-        ) :(
-            <div> Welcome Guest</div>
-        )
+        return this.state.isLoggedin && <div> Welcome Bishwajit</div>
         }
     }
 
